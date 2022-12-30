@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <article>
+    <h1>Analysis of Distribution-based Clustering Methods
+    </h1>
+    <div class="info_block">
+      <p class="info">Created by</p>
+      <p class="likes">Fareed Hassan Khan</p>
+      <p class="replies"> - ERP 25367</p>
+      <!-- <p class="mentions"> &#8226 3 mentions</p> -->
+    </div>
+    <div>
+      <p class="last_update">Published on December 31, 2022</p>
+    </div>
+    <p><em>Data mining</em> and <em>machine learning</em> techniques called clustering involve categorising a dataset
+      into clusters, each cluster consisting of data points that are like one another. <em>Clustering algorithms</em>
+      come in a wide range of variations. In this blog article, we will examine several <em>clustering techniques</em>
+      on various types of datasets, as well as some advantages and disadvantages of applying them.</p>
+  </article>
+
+  <article>
+    <h2>Introduction</h2>
+    <p>There are more than 100 different clustering algorithms exist, as I previously stated, and the one that is best
+      suited for a given dataset will rely on the properties of the data and the goals of the study. In this blog we
+      will focusing on the following types of clustering algorithms:
+    </p>
+    <ul>
+      <li><span class="link">Partitioning methods</span> - These algorithms divide the data into a predetermined number
+        of clusters, such as Mini-batch k-means which is basically a variant of the popular k-means clustering algorithm
+        that is designed to handle large datasets more efficiently.</li>
+      <li><span class="link">Hierarchical methods</span> - These algorithms construct a hierarchy of clusters by
+        iteratively merging or splitting data points based on their similarity, such as agglomerative hierarchical
+        clustering. </li>
+      <li><span class="link">Density-based methods</span> - These algorithms identify clusters by identifying regions of
+        high density in the data, such as DBSCAN and an extension of DBSCAN i.e., OPTICS.</li>
+      <li><span class="link">Model-based methods</span> - These algorithms use a statistical model to describe the data
+        and identify clusters, such as Gaussian mixture models (GMM), Affinity Propagation and Spectral Clustering.</li>
+
+    </ul>
+    <p>
+      Within these clustering methods<em>Probabilistic models</em> are important because they provide a framework for
+      understanding the uncertainty and variability in the data. Since <em>GMM (Model-based method)</em> is a
+      probabilistic model that assumes that the data points in a cluster are drawn from a mixture of several different
+      normal distributions. The purpose of this blog is to <em>compare GMM with other clustering approaches </em>and
+      analyse on what cases does GMM performs well and in what cases it does not?
+    </p>
+  </article>
+
+  <article>
+    <h2>Dataset Description</h2>
+    <p>We will be using 10 different datasets and all of them are being collected from <span class="link">UCI Machine Learning
+        Repository</span>. Here is the description:</p>
+    <img src="1.png" alt="Dataset description" loading="lazy">
+  </article>
+
+  <div class="highlight">
+    <h3>💡 Important Points</h3>
+    <ul>
+      <li>
+        Score of each model depends on the mean of Clustering metrics. This metric involves silhouette score,
+        Davies-Bouldin score etc, a total 6 measures have been used to calculate the clustering metrics.
+      </li>
+      <li>Hyper parameter tuning is necessary for each model to make the comparison among them otherwise the results
+        won't be accurate.
+
+      <li>GridSearchCV is used for tuning the GMM parameters.
+      <li>For other models such as Mini Batch K means, Agglomerative etc, different combinations of parameters will be
+        used and the combination that yield the highest mean of clustering metric will represent the best combination of
+        parameters for that model.</li>
+      </li>
+    </ul>
+  </div>
+
+  <article>
+    <h2>Results and Findings</h2>
+    <p>Before doing hyper parameter tuning, for Mini-Batch Kmeans and Agglomerative, we plotted Elbow curve and
+      Dendrogram to obtain ideal number of clusters for each dataset. </p>
+    <p><em>For example: based on elbow curve the number of cluster for dataset 1 is 7 and based on dendrogram is 2 and
+        so on. A total of 10 figures were generated.</em></p>
+    <img src="2.png" alt="Elbow and Dendogram graph" loading="lazy">
+
+    <p>After computing the elbow curve and dendrogram we now must perform hyper parameter tuning for all the models
+      other than GMM.
+    </p>
+    <p><em> Let's look at the hyper parameter tuning for first dataset:</em>
+    </p>
+    <img src="3.png" alt="Single-parameter-tuning-graph" loading="lazy">
+    <p>To find the best parameter combination for each of the listed clustering model, we must choose the highest point
+      for each of the line which gives us the best parameters for each model. (Example: for Mini-batch Kmeans
+      combination 4 is the best as it gives the highest score value and so on for other models).
+      Similarly, this graph was also plotted for each dataset, A total 10 figures were generated:
+    </p>
+    <img src="4.png" alt="combined-parameter-tuning-graph" loading="lazy">
+    <p>Now after computing the best parameter of each model for each dataset. It’s time to perform Hyper parameter
+      tuning for GMM. This is done by using GridSearchCV and a user-defined score function which returns the negative
+      BIC score, as GridSearchCV is designed to maximize a score (maximizing the negative BIC is equivalent to
+      minimizing the BIC).
+    </p>
+    <p><em> Let’s look at the hyper parameter tuning of GMM for first dataset:</em></p>
+
+    <img src="5.png" alt="single-parameter-tuning-graph-gmm" loading="lazy">
+
+    <p>By keeping the number of component constant i.e., <em>1</em> we can clearly observe by changing the covariance
+      type, each of the covariance type yield somewhat similar BIC Value without having much variation and so on.
+      Moreover, we can see that for number of component value <em>6</em>, type of covariance value equal to
+      <em>diag</em> yield the minimum BIC value as compared to all other combinations.
+      Similarly, this graph was also plotted for each dataset, A total 10 figures were generated:
+    </p>
+
+    <img src="6.png" alt="combined-parameter-tuning-graph-gmm" loading="lazy">
+    <p>As we have performed Hyper parameter tuning for each model now, we have to make comparison between GMM score and
+      the rest of the models score for each dataset.</p>
+    <img src="7.png" alt="combined-parameter-tuning-graph-gmm" loading="lazy">
+
+  </article>
+
+  <article>
+    <h2>Conclusion</h2>
+    <p>As you can see for half of the datasets GMM score is very less as compared to any other model while for other
+      half datasets GMM did perform well in comparison. There are several possible explanations for why a Gaussian
+      mixture model (GMM) could not function effectively in a specific circumstance.</p>
+    <p>Some reasons are:</p>
+    <ul>
+      <li>GMMs may not function effectively with limited or poorly representative datasets because they are
+        probabilistic models that depend on statistical estimations.
+      </li>
+      <li> A GMM may overfit the data and perform badly on fresh, untested data if it has too many components (i.e., is
+        too complicated). </li>
+      <li>
+        The GMM has a variety of hyperparameters that need to be properly selected, including the model's covariance
+        structure and the number of components. The GMM might not work successfully if these hyperparameters are not
+        configured correctly.</li>
+      <li>GMMs may not function well if the data is highly skewed or contains outliers since they presume that the data
+        being modelled has a Gaussian distribution.</li>
+    </ul>
+    <p>It's also possible that the GMM is not the most appropriate model for the task at hand, and a different type of model would perform better.</p>
+    <p>While for other half datasets it can be multiple reason of why GMM gives high score, some reasons are:</p>
+    <ul>
+      <li>GMM works best when the data are well-suited to this kind of model. The data is well-modelled by a mixture of Gaussians. GMM might be an excellent option, for instance, if the data is unimodal (i.e., contains a single peak) and has a symmetrical distribution.
+      </li>
+      <li>The number of components is properly chosen: GMM requires the user to specify the number of mixture components (i.e., the number of Gaussian distributions in the mixture). If the number of components is chosen appropriately, the model can accurately capture the complexity of the data and perform well.</li>
+    </ul>
+  </article>
+
+</body>
+
+</html>
